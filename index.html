@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TripVault</title>
+
+<style>
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --danger: #dc2626;
+  --border: #e5e7eb;
+}
+
+body.dark {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+  --border: #334155;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+main {
+  max-width: 760px;
+  margin: auto;
+  padding: 14px;
+  padding-bottom: 90px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 15px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+}
+
+.stat strong {
+  display: block;
+  font-size: 26px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 16px;
+  background: var(--card);
+  color: var(--text);
+}
+
+textarea {
+  min-height: 90px;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 11px 13px;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  margin: 4px 2px;
+}
+
+button.danger {
+  background: var(--danger);
+}
+
+button.secondary {
+  background: #64748b;
+}
+
+.trip h3 {
+  margin: 0 0 4px;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 760px;
+  margin: auto;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.nav button {
+  border-radius: 0;
+  background: var(--card);
+  color: var(--text);
+  font-size: 12px;
+}
+
+.nav button.active {
+  background: var(--primary);
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+.memory {
+  background: rgba(250, 204, 21, .18);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 8px;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>TripVault</h1>
+  <p>Plan trips. Save memories.</p>
+</header>
+
+<main>
+  <section id="dashboard"></section>
+  <section id="content"></section>
+</main>
+
+<nav class="nav">
+  <button onclick="showPage('upcoming')" id="nav-upcoming">Upcoming</button>
+  <button onclick="showPage('past')" id="nav-past">Past</button>
+  <button onclick="showPage('wanted')" id="nav-wanted">Wanted</button>
+  <button onclick="showPage('memories')" id="nav-memories">Memories</button>
+  <button onclick="showPage('settings')" id="nav-settings">Settings</button>
+</nav>
+
+<script>
+let trips = JSON.parse(localStorage.getItem("tripvault_trips")) || [
+  {
+    id: crypto.randomUUID(),
+    title: "Cancun Anniversary",
+    destination: "Playa Mujeres, Mexico",
+    startDate: "2026-10-11",
+    endDate: "2026-10-16",
+    travelers: "Scott & Robyn",
+    budget: "4500",
+    status: "upcoming",
+    notes: "Comfort, food, resort quality, and relaxation.",
+    rating: "",
+    favoriteMemory: "",
+    memories: []
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Phoenix Weekend",
+    destination: "Phoenix / Scottsdale",
+    startDate: "2026-06-05",
+    endDate: "2026-06-07",
+    travelers: "Scott & Robyn",
+    budget: "1200",
+    status: "past",
+    notes: "Food, resort, and walking spots.",
+    rating: "4",
+    favoriteMemory: "Dinner and walking Scottsdale.",
+    memories: ["Good dinner date", "Walking around Scottsdale"]
+  }
+];
+
+let currentPage = "upcoming";
+
+function save() {
+  localStorage.setItem("tripvault_trips", JSON.stringify(trips));
+}
+
+function showPage(page) {
+  currentPage = page;
+
+  document.querySelectorAll(".nav button").forEach(btn => btn.classList.remove("active"));
+  const active = document.getElementById("nav-" + page);
+  if (active) active.classList.add("active");
+
+  renderDashboard();
+
+  if (["upcoming", "past", "wanted"].includes(page)) renderTrips(page);
+  if (page === "memories") renderMemories();
+  if (page === "settings") renderSettings();
+}
+
+function renderDashboard() {
+  const upcoming = trips.filter(t => t.status === "upcoming").length;
+  const past = trips.filter(t => t.status === "past").length;
+  const wanted = trips.filter(t => t.status === "wanted").length;
+
+  document.getElementById("dashboard").innerHTML = `
+    <div class="grid">
+      <div class="stat"><strong>${upcoming}</strong>Upcoming</div>
+      <div class="stat"><strong>${past}</strong>Past</div>
+      <div class="stat"><strong>${wanted}</strong>Wanted</div>
+      <div class="stat"><strong>${trips.length}</strong>Total Trips</div>
+    </div>
+    <br>
+  `;
+}
+
+function renderTrips(status) {
+  const filtered = trips.filter(t => t.status === status);
+
+  document.getElementById("content").innerHTML = `
+    <div class="card">
+      <h2>${capitalize(status)} Trips</h2>
+      ${tripForm(status)}
+    </div>
+
+    ${filtered.length === 0 ? `<div class="card">No ${status} trips yet.</div>` : ""}
+
+    ${filtered.map(tripCard).join("")}
+  `;
+}
+
+function tripForm(defaultStatus) {
+  return `
+    <input id="title" placeholder="Trip title">
+    <input id="destination" placeholder="Destination">
+    <input id="startDate" type="date">
+    <input id="endDate" type="date">
+    <input id="travelers" placeholder="Travelers">
+    <input id="budget" placeholder="Budget">
+    <select id="status">
+      <option value="upcoming" ${defaultStatus === "upcoming" ? "selected" : ""}>Upcoming</option>
+      <option value="past" ${defaultStatus === "past" ? "selected" : ""}>Past</option>
+      <option value="wanted" ${defaultStatus === "wanted" ? "selected" : ""}>Wanted</option>
+    </select>
+    <textarea id="notes" placeholder="Notes, plans, restaurants, resort info, ideas..."></textarea>
+    <button onclick="addTrip()">Save Trip</button>
+  `;
+}
+
+function addTrip() {
+  const trip = {
+    id: crypto.randomUUID(),
+    title: value("title"),
+    destination: value("destination"),
+    startDate: value("startDate"),
+    endDate: value("endDate"),
+    travelers: value("travelers"),
+    budget: value("budget"),
+    status: value("status"),
+    notes: value("notes"),
+    rating: "",
+    favoriteMemory: "",
+    memories: []
+  };
+
+  if (!trip.title || !trip.destination) {
+    alert("Trip title and destination are required.");
+    return;
+  }
+
+  trips.push(trip);
+  save();
+  showPage(trip.status);
+}
+
+function tripCard(trip) {
+  return `
+    <div class="card trip">
+      <h3>${escapeHTML(trip.title)}</h3>
+      <p class="meta">${escapeHTML(trip.destination)}</p>
+      <p><strong>Dates:</strong> ${trip.startDate || "Not set"} - ${trip.endDate || "Not set"}</p>
+      <p><strong>Travelers:</strong> ${escapeHTML(trip.travelers || "Not set")}</p>
+      <p><strong>Budget:</strong> ${trip.budget ? "$" + escapeHTML(trip.budget) : "Not set"}</p>
+      <p>${escapeHTML(trip.notes || "")}</p>
+
+      ${trip.status === "past" ? `
+        <p><strong>Rating:</strong> ${trip.rating || "Not rated"}</p>
+        <p><strong>Favorite Memory:</strong> ${escapeHTML(trip.favoriteMemory || "None yet")}</p>
+      ` : ""}
+
+      <input id="memory-${trip.id}" placeholder="Add memory">
+      <button onclick="addMemory('${trip.id}')">Add Memory</button>
+      <button class="secondary" onclick="editTrip('${trip.id}')">Edit</button>
+      <button class="danger" onclick="deleteTrip('${trip.id}')">Delete</button>
+
+      ${(trip.memories || []).map(m => `<div class="memory">${escapeHTML(m)}</div>`).join("")}
+    </div>
+  `;
+}
+
+function addMemory(id) {
+  const input = document.getElementById("memory-" + id);
+  const text = input.value.trim();
+  if (!text) return;
+
+  const trip = trips.find(t => t.id === id);
+  trip.memories.push(text);
+
+  if (!trip.favoriteMemory) trip.favoriteMemory = text;
+
+  save();
+  showPage(currentPage);
+}
+
+function editTrip(id) {
+  const trip = trips.find(t => t.id === id);
+
+  const title = prompt("Trip title:", trip.title);
+  if (title === null) return;
+
+  const destination = prompt("Destination:", trip.destination);
+  if (destination === null) return;
+
+  const notes = prompt("Notes:", trip.notes);
+  if (notes === null) return;
+
+  const rating = prompt("Rating 1-5:", trip.rating || "");
+  if (rating === null) return;
+
+  trip.title = title;
+  trip.destination = destination;
+  trip.notes = notes;
+  trip.rating = rating;
+
+  save();
+  showPage(currentPage);
+}
+
+function deleteTrip(id) {
+  if (!confirm("Delete this trip?")) return;
+  trips = trips.filter(t => t.id !== id);
+  save();
+  showPage(currentPage);
+}
+
+function renderMemories() {
+  const memoryTrips = trips.filter(t => (t.memories && t.memories.length) || t.favoriteMemory);
+
+  document.getElementById("content").innerHTML = `
+    <div class="card">
+      <h2>Memories</h2>
+      <p class="meta">Past trip highlights and favorite moments.</p>
+    </div>
+
+    ${memoryTrips.length === 0 ? `<div class="card">No memories saved yet.</div>` : ""}
+
+    ${memoryTrips.map(t => `
+      <div class="card">
+        <h3>${escapeHTML(t.title)}</h3>
+        <p class="meta">${escapeHTML(t.destination)}</p>
+        ${t.favoriteMemory ? `<div class="memory"><strong>Favorite:</strong> ${escapeHTML(t.favoriteMemory)}</div>` : ""}
+        ${(t.memories || []).map(m => `<div class="memory">${escapeHTML(m)}</div>`).join("")}
+      </div>
+    `).join("")}
+  `;
+}
+
+function renderSettings() {
+  document.getElementById("content").innerHTML = `
+    <div class="card">
+      <h2>Settings</h2>
+
+      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+      <button onclick="exportTrips()">Export Trips</button>
+
+      <textarea id="importBox" placeholder="Paste exported trip data here"></textarea>
+      <button onclick="importTrips()">Import Trips</button>
+
+      <hr>
+
+      <h3>AI Planner Placeholder</h3>
+      <textarea id="plannerPrompt" placeholder="Example: Plan a 5-day Cancun trip under $5,000."></textarea>
+      <button onclick="generatePlan()">Generate Plan</button>
+      <div id="plannerResult"></div>
+    </div>
+  `;
+}
+
+function generatePlan() {
+  const prompt = value("plannerPrompt");
+
+  document.getElementById("plannerResult").innerHTML = `
+    <div class="memory">
+      <strong>Suggested Plan</strong><br><br>
+      Request: ${escapeHTML(prompt)}<br><br>
+      Day 1: Arrive, check in, easy dinner.<br>
+      Day 2: Pool, beach, relax.<br>
+      Day 3: Main excursion or activity.<br>
+      Day 4: Flexible day and nice dinner.<br>
+      Day 5: Breakfast, pack, travel home.<br><br>
+      Later this can connect to OpenAI through Firebase.
+    </div>
+  `;
+}
+
+function exportTrips() {
+  navigator.clipboard.writeText(JSON.stringify(trips, null, 2));
+  alert("Trip data copied to clipboard.");
+}
+
+function importTrips() {
+  try {
+    const data = JSON.parse(value("importBox"));
+    if (!Array.isArray(data)) throw new Error();
+    trips = data;
+    save();
+    showPage("upcoming");
+  } catch {
+    alert("Invalid import data.");
+  }
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
+function value(id) {
+  return document.getElementById(id)?.value.trim() || "";
+}
+
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function escapeHTML(text) {
+  return String(text).replace(/[&<>"']/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[m]));
+}
+
+showPage("upcoming");
+</script>
+</body>
+</html>
