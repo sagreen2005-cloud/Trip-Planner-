@@ -7,292 +7,689 @@
 
 <style>
 :root {
-  --bg: #f4f6f8;
-  --card: #ffffff;
-  --text: #111827;
-  --muted: #6b7280;
-  --primary: #2563eb;
-  --danger: #dc2626;
-  --border: #e5e7eb;
+  --bg:#f7f7f4;
+  --card:#ffffff;
+  --text:#121212;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --green:#55b980;
+  --green-dark:#2f8f5d;
+  --yellow:#f2bd3d;
+  --red:#f2645f;
+  --blue:#2563eb;
+  --black:#111827;
+  --shadow:0 8px 24px rgba(0,0,0,.08);
 }
 
-body.dark {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --text: #f8fafc;
-  --muted: #cbd5e1;
-  --border: #334155;
-}
-
-* {
-  box-sizing: border-box;
-}
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
 header {
-  background: var(--primary);
-  color: white;
-  padding: 20px;
-  text-align: center;
+  padding:18px 16px 12px;
+  background:var(--card);
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:10;
 }
 
-header h1 {
-  margin: 0;
+.brand {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo {
+  font-weight:900;
+  font-size:24px;
+}
+
+.logo span { color:var(--green-dark); }
+
+.small {
+  font-size:13px;
+  color:var(--muted);
 }
 
 main {
-  max-width: 760px;
-  margin: auto;
-  padding: 14px;
-  padding-bottom: 90px;
+  max-width:900px;
+  margin:auto;
+  padding:14px;
+  padding-bottom:90px;
 }
 
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 15px;
-  margin-bottom: 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+.hero {
+  border-radius:24px;
+  padding:22px;
+  background:linear-gradient(135deg,var(--green),#85dfaa);
+  color:white;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.hero h1 {
+  margin:0 0 6px;
+  font-size:28px;
+}
+
+.hero p {
+  margin:0;
+  opacity:.95;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:14px 0;
 }
 
 .stat {
-  background: var(--card);
-  border-radius: 14px;
-  padding: 14px;
-  border: 1px solid var(--border);
+  background:var(--card);
+  border-radius:16px;
+  padding:12px;
+  box-shadow:var(--shadow);
+  text-align:center;
 }
 
 .stat strong {
-  display: block;
-  font-size: 26px;
+  display:block;
+  font-size:22px;
+}
+
+.card {
+  background:var(--card);
+  border-radius:20px;
+  padding:15px;
+  margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+
+.trip-card {
+  overflow:hidden;
+  padding:0;
+}
+
+.trip-cover {
+  height:150px;
+  background:linear-gradient(135deg,#1d4ed8,#93c5fd);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:16px;
+}
+
+.trip-cover.green { background:linear-gradient(135deg,#15803d,#86efac); }
+.trip-cover.yellow { background:linear-gradient(135deg,#d97706,#fde68a); }
+.trip-cover.red { background:linear-gradient(135deg,#dc2626,#fca5a5); }
+
+.trip-body {
+  padding:15px;
+}
+
+.trip-body h3 {
+  margin:0 0 4px;
+}
+
+.badge {
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#3730a3;
+  font-size:12px;
+  font-weight:800;
+}
+
+.row {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.tabs {
+  display:flex;
+  overflow-x:auto;
+  gap:8px;
+  padding-bottom:8px;
+}
+
+.tabs button {
+  white-space:nowrap;
+  background:var(--card);
+  color:var(--text);
+  border:1px solid var(--line);
+}
+
+.tabs button.active {
+  background:var(--black);
+  color:white;
 }
 
 input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 6px 0;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  font-size: 16px;
-  background: var(--card);
-  color: var(--text);
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border-radius:13px;
+  border:1px solid var(--line);
+  font-size:16px;
+  background:white;
 }
 
-textarea {
-  min-height: 90px;
-}
+textarea { min-height:90px; }
 
 button {
-  border: none;
-  border-radius: 10px;
-  padding: 11px 13px;
-  background: var(--primary);
-  color: white;
-  font-weight: bold;
-  margin: 4px 2px;
+  border:0;
+  border-radius:999px;
+  padding:11px 15px;
+  background:var(--black);
+  color:white;
+  font-weight:800;
+  margin:4px 2px;
+  cursor:pointer;
 }
 
-button.danger {
-  background: var(--danger);
+button.green { background:var(--green-dark); }
+button.red { background:var(--red); }
+button.blue { background:var(--blue); }
+button.gray { background:#64748b; }
+
+.map-panel {
+  height:230px;
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 20% 30%, #fef3c7 0 8%, transparent 9%),
+    radial-gradient(circle at 75% 35%, #bfdbfe 0 10%, transparent 11%),
+    radial-gradient(circle at 55% 70%, #bbf7d0 0 13%, transparent 14%),
+    linear-gradient(135deg,#dbeafe,#f0fdf4);
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--line);
 }
 
-button.secondary {
-  background: #64748b;
+.pin {
+  position:absolute;
+  background:white;
+  border-radius:999px;
+  padding:7px 10px;
+  font-weight:900;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+  font-size:13px;
 }
 
-.trip h3 {
-  margin: 0 0 4px;
-}
+.pin.one { top:35%; left:15%; }
+.pin.two { top:48%; left:55%; }
+.pin.three { top:65%; left:35%; }
+.pin.four { top:22%; left:68%; }
 
-.meta {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 760px;
-  margin: auto;
-  background: var(--card);
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.nav button {
-  border-radius: 0;
-  background: var(--card);
-  color: var(--text);
-  font-size: 12px;
-}
-
-.nav button.active {
-  background: var(--primary);
-  color: white;
-}
-
-.hidden {
-  display: none;
+.itinerary-day {
+  border-left:4px solid var(--green-dark);
+  padding-left:12px;
+  margin:12px 0;
 }
 
 .memory {
-  background: rgba(250, 204, 21, .18);
-  border-radius: 10px;
-  padding: 10px;
-  margin-top: 8px;
+  background:#fff7d6;
+  border-radius:14px;
+  padding:12px;
+  margin-top:8px;
+}
+
+.ai-box {
+  background:#ffe9e8;
+  border-radius:22px;
+  padding:16px;
+}
+
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  max-width:900px;
+  margin:auto;
+  background:white;
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  z-index:20;
+}
+
+.bottom-nav button {
+  border-radius:0;
+  background:white;
+  color:#111;
+  font-size:12px;
+  padding:10px 4px;
+}
+
+.bottom-nav button.active {
+  background:#111;
+  color:white;
+}
+
+.hidden { display:none; }
+
+@media (max-width:600px) {
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .hero h1 { font-size:24px; }
 }
 </style>
 </head>
 
 <body>
+
 <header>
-  <h1>TripVault</h1>
-  <p>Plan trips. Save memories.</p>
+  <div class="brand">
+    <div>
+      <div class="logo">Trip<span>Vault</span></div>
+      <div class="small">Plan trips. Save memories. Build better vacations.</div>
+    </div>
+    <button onclick="showPage('add')" class="green">+ Trip</button>
+  </div>
 </header>
 
 <main>
-  <section id="dashboard"></section>
-  <section id="content"></section>
+  <section id="app"></section>
 </main>
 
-<nav class="nav">
-  <button onclick="showPage('upcoming')" id="nav-upcoming">Upcoming</button>
-  <button onclick="showPage('past')" id="nav-past">Past</button>
-  <button onclick="showPage('wanted')" id="nav-wanted">Wanted</button>
-  <button onclick="showPage('memories')" id="nav-memories">Memories</button>
-  <button onclick="showPage('settings')" id="nav-settings">Settings</button>
+<nav class="bottom-nav">
+  <button id="nav-home" onclick="showPage('home')">Home</button>
+  <button id="nav-trips" onclick="showPage('trips')">Trips</button>
+  <button id="nav-map" onclick="showPage('map')">Map</button>
+  <button id="nav-ai" onclick="showPage('ai')">AI</button>
+  <button id="nav-memories" onclick="showPage('memories')">Memories</button>
 </nav>
 
 <script>
-let trips = JSON.parse(localStorage.getItem("tripvault_trips")) || [
+let trips = JSON.parse(localStorage.getItem("tripvault_wander_trips")) || [
   {
     id: crypto.randomUUID(),
     title: "Cancun Anniversary",
     destination: "Playa Mujeres, Mexico",
+    status: "upcoming",
     startDate: "2026-10-11",
     endDate: "2026-10-16",
     travelers: "Scott & Robyn",
     budget: "4500",
-    status: "upcoming",
-    notes: "Comfort, food, resort quality, and relaxation.",
+    notes: "Comfort, food, relaxation, and resort quality.",
+    wantedReason: "",
     rating: "",
     favoriteMemory: "",
+    itinerary: [
+      "Day 1: Arrive, transfer, check in, dinner",
+      "Day 2: Pool, beach, spa",
+      "Day 3: Excursion or Isla Mujeres",
+      "Day 4: Relax and nice dinner",
+      "Day 5: Travel home"
+    ],
     memories: []
   },
   {
     id: crypto.randomUUID(),
     title: "Phoenix Weekend",
     destination: "Phoenix / Scottsdale",
+    status: "past",
     startDate: "2026-06-05",
     endDate: "2026-06-07",
     travelers: "Scott & Robyn",
     budget: "1200",
-    status: "past",
-    notes: "Food, resort, and walking spots.",
+    notes: "Resort time, restaurants, and walking spots.",
+    wantedReason: "",
     rating: "4",
     favoriteMemory: "Dinner and walking Scottsdale.",
-    memories: ["Good dinner date", "Walking around Scottsdale"]
+    itinerary: [],
+    memories: ["Good food", "Relaxing weekend", "Walk around Scottsdale"]
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Hawaii Idea Trip",
+    destination: "Hawaii",
+    status: "wanted",
+    startDate: "",
+    endDate: "",
+    travelers: "Scott & Robyn",
+    budget: "6500",
+    notes: "Drop kids in Denver, use points, four nights in Hawaii.",
+    wantedReason: "Beach, relaxation, and bucket list trip.",
+    rating: "",
+    favoriteMemory: "",
+    itinerary: [],
+    memories: []
   }
 ];
 
-let currentPage = "upcoming";
+let currentFilter = "upcoming";
 
 function save() {
-  localStorage.setItem("tripvault_trips", JSON.stringify(trips));
+  localStorage.setItem("tripvault_wander_trips", JSON.stringify(trips));
 }
 
 function showPage(page) {
-  currentPage = page;
+  document.querySelectorAll(".bottom-nav button").forEach(b => b.classList.remove("active"));
+  const nav = document.getElementById("nav-" + page);
+  if (nav) nav.classList.add("active");
 
-  document.querySelectorAll(".nav button").forEach(btn => btn.classList.remove("active"));
-  const active = document.getElementById("nav-" + page);
-  if (active) active.classList.add("active");
-
-  renderDashboard();
-
-  if (["upcoming", "past", "wanted"].includes(page)) renderTrips(page);
+  if (page === "home") renderHome();
+  if (page === "trips") renderTrips();
+  if (page === "map") renderMap();
+  if (page === "ai") renderAI();
   if (page === "memories") renderMemories();
-  if (page === "settings") renderSettings();
+  if (page === "add") renderAddTrip();
 }
 
-function renderDashboard() {
+function renderHome() {
   const upcoming = trips.filter(t => t.status === "upcoming").length;
   const past = trips.filter(t => t.status === "past").length;
   const wanted = trips.filter(t => t.status === "wanted").length;
+  const totalBudget = trips.reduce((sum,t) => sum + (Number(t.budget) || 0), 0);
 
-  document.getElementById("dashboard").innerHTML = `
-    <div class="grid">
-      <div class="stat"><strong>${upcoming}</strong>Upcoming</div>
-      <div class="stat"><strong>${past}</strong>Past</div>
-      <div class="stat"><strong>${wanted}</strong>Wanted</div>
-      <div class="stat"><strong>${trips.length}</strong>Total Trips</div>
+  app.innerHTML = `
+    <div class="hero">
+      <h1>Discover, plan, and remember your trips.</h1>
+      <p>A private family travel vault for upcoming trips, past memories, and places you still want to go.</p>
     </div>
-    <br>
-  `;
-}
 
-function renderTrips(status) {
-  const filtered = trips.filter(t => t.status === status);
+    <div class="stats">
+      <div class="stat"><strong>${upcoming}</strong><span>Upcoming</span></div>
+      <div class="stat"><strong>${past}</strong><span>Past</span></div>
+      <div class="stat"><strong>${wanted}</strong><span>Wanted</span></div>
+      <div class="stat"><strong>$${totalBudget.toLocaleString()}</strong><span>Planned</span></div>
+    </div>
 
-  document.getElementById("content").innerHTML = `
     <div class="card">
-      <h2>${capitalize(status)} Trips</h2>
-      ${tripForm(status)}
+      <div class="row">
+        <h2>Next Trip</h2>
+        <button onclick="showPage('trips')">View All</button>
+      </div>
+      ${nextTripCard()}
     </div>
 
-    ${filtered.length === 0 ? `<div class="card">No ${status} trips yet.</div>` : ""}
-
-    ${filtered.map(tripCard).join("")}
+    <div class="card">
+      <h2>Trip Ideas</h2>
+      <p class="small">Save dream trips now. Build them into real plans later.</p>
+      ${trips.filter(t => t.status === "wanted").slice(0,2).map(compactTrip).join("") || "<p>No wanted trips yet.</p>"}
+    </div>
   `;
 }
 
-function tripForm(defaultStatus) {
+function nextTripCard() {
+  const upcoming = trips.filter(t => t.status === "upcoming")[0];
+  if (!upcoming) return "<p>No upcoming trip saved.</p>";
+  return tripCard(upcoming, true);
+}
+
+function renderTrips() {
+  const filtered = trips.filter(t => t.status === currentFilter);
+
+  app.innerHTML = `
+    <div class="tabs">
+      <button class="${currentFilter==='upcoming'?'active':''}" onclick="setFilter('upcoming')">Upcoming</button>
+      <button class="${currentFilter==='past'?'active':''}" onclick="setFilter('past')">Past</button>
+      <button class="${currentFilter==='wanted'?'active':''}" onclick="setFilter('wanted')">Wanted</button>
+    </div>
+
+    <div class="card">
+      <h2>${cap(currentFilter)} Trips</h2>
+      <p class="small">${filtered.length} saved</p>
+    </div>
+
+    ${filtered.map(t => tripCard(t)).join("") || `<div class="card">No ${currentFilter} trips yet.</div>`}
+  `;
+}
+
+function setFilter(status) {
+  currentFilter = status;
+  renderTrips();
+}
+
+function tripCard(t, compact=false) {
+  const color = t.status === "past" ? "yellow" : t.status === "wanted" ? "red" : "green";
+
   return `
-    <input id="title" placeholder="Trip title">
-    <input id="destination" placeholder="Destination">
-    <input id="startDate" type="date">
-    <input id="endDate" type="date">
-    <input id="travelers" placeholder="Travelers">
-    <input id="budget" placeholder="Budget">
-    <select id="status">
-      <option value="upcoming" ${defaultStatus === "upcoming" ? "selected" : ""}>Upcoming</option>
-      <option value="past" ${defaultStatus === "past" ? "selected" : ""}>Past</option>
-      <option value="wanted" ${defaultStatus === "wanted" ? "selected" : ""}>Wanted</option>
-    </select>
-    <textarea id="notes" placeholder="Notes, plans, restaurants, resort info, ideas..."></textarea>
-    <button onclick="addTrip()">Save Trip</button>
+    <div class="card trip-card">
+      <div class="trip-cover ${color}">
+        <span class="badge">${cap(t.status)}</span>
+        <h2>${safe(t.title)}</h2>
+        <p>${safe(t.destination)}</p>
+      </div>
+      <div class="trip-body">
+        <p><strong>Dates:</strong> ${t.startDate || "Not set"} ${t.endDate ? " - " + t.endDate : ""}</p>
+        <p><strong>Travelers:</strong> ${safe(t.travelers || "Not set")}</p>
+        <p><strong>Budget:</strong> ${t.budget ? "$" + Number(t.budget).toLocaleString() : "Not set"}</p>
+        <p>${safe(t.notes || "")}</p>
+
+        ${!compact ? `
+          <button onclick="openTrip('${t.id}')">Open</button>
+          <button class="gray" onclick="editTrip('${t.id}')">Edit</button>
+          <button class="red" onclick="deleteTrip('${t.id}')">Delete</button>
+        ` : `<button onclick="openTrip('${t.id}')">Open Trip</button>`}
+      </div>
+    </div>
+  `;
+}
+
+function compactTrip(t) {
+  return `
+    <div class="memory">
+      <strong>${safe(t.title)}</strong><br>
+      <span class="small">${safe(t.destination)} — ${t.budget ? "$" + safe(t.budget) : "Budget not set"}</span>
+    </div>
+  `;
+}
+
+function openTrip(id) {
+  const t = trips.find(x => x.id === id);
+
+  app.innerHTML = `
+    <button onclick="showPage('trips')">← Back</button>
+
+    <div class="card trip-card">
+      <div class="trip-cover ${t.status === 'past' ? 'yellow' : t.status === 'wanted' ? 'red' : 'green'}">
+        <span class="badge">${cap(t.status)}</span>
+        <h2>${safe(t.title)}</h2>
+        <p>${safe(t.destination)}</p>
+      </div>
+
+      <div class="trip-body">
+        <p><strong>Dates:</strong> ${t.startDate || "Not set"} ${t.endDate ? " - " + t.endDate : ""}</p>
+        <p><strong>Travelers:</strong> ${safe(t.travelers || "Not set")}</p>
+        <p><strong>Budget:</strong> ${t.budget ? "$" + Number(t.budget).toLocaleString() : "Not set"}</p>
+        <p><strong>Notes:</strong> ${safe(t.notes || "")}</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Itinerary</h2>
+      ${(t.itinerary || []).map(i => `<div class="itinerary-day">${safe(i)}</div>`).join("") || "<p>No itinerary yet.</p>"}
+      <input id="newItinerary" placeholder="Add itinerary item">
+      <button onclick="addItinerary('${t.id}')">Add Itinerary</button>
+    </div>
+
+    <div class="card">
+      <h2>Saved Places</h2>
+      <p class="small">This is where restaurants, hotels, hikes, resorts, and activities will go.</p>
+      <input id="placeInput" placeholder="Example: Stockyards Restaurant, Pearl Harbor, Excellence Playa Mujeres">
+      <button onclick="addPlaceToNotes('${t.id}')">Save Place</button>
+    </div>
+
+    <div class="card">
+      <h2>Memories</h2>
+      ${t.favoriteMemory ? `<div class="memory"><strong>Favorite:</strong> ${safe(t.favoriteMemory)}</div>` : ""}
+      ${(t.memories || []).map(m => `<div class="memory">${safe(m)}</div>`).join("") || "<p>No memories yet.</p>"}
+      <input id="memoryInput" placeholder="Add memory">
+      <button onclick="addMemory('${t.id}')">Add Memory</button>
+    </div>
+
+    <div class="card">
+      <h2>Photos</h2>
+      <p class="small">Photo upload will come later with Firebase Storage. For now, use memories and notes.</p>
+      <button class="gray">Photo Import Placeholder</button>
+    </div>
+  `;
+}
+
+function renderMap() {
+  app.innerHTML = `
+    <div class="card">
+      <h2>Travel Map</h2>
+      <p class="small">Visual map placeholder. Later this can become Google Maps or Mapbox.</p>
+      <div class="map-panel">
+        <div class="pin one">Cancun</div>
+        <div class="pin two">Phoenix</div>
+        <div class="pin three">Hawaii</div>
+        <div class="pin four">Cruise</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Places Saved</h2>
+      ${trips.map(t => `<div class="memory"><strong>${safe(t.destination)}</strong><br><span class="small">${safe(t.title)}</span></div>`).join("")}
+    </div>
+  `;
+}
+
+function renderAI() {
+  app.innerHTML = `
+    <div class="ai-box">
+      <h2>Create custom AI itineraries</h2>
+      <p>Eventually this will connect to ChatGPT/OpenAI through Firebase. For now it creates a sample plan.</p>
+
+      <textarea id="aiPrompt" placeholder="Example: Plan a 5-day Cancun anniversary trip under $5,000 with good food and comfort."></textarea>
+
+      <div class="tabs">
+        <button onclick="quickAI('Must-see attractions')">Must-see</button>
+        <button onclick="quickAI('Hidden gems')">Hidden gems</button>
+        <button onclick="quickAI('Great food')">Food</button>
+        <button onclick="quickAI('Relaxing couples trip')">Couples</button>
+      </div>
+
+      <button onclick="generateAI()">Generate Itinerary</button>
+    </div>
+
+    <div id="aiResult"></div>
+  `;
+}
+
+function quickAI(text) {
+  document.getElementById("aiPrompt").value += (document.getElementById("aiPrompt").value ? ", " : "") + text;
+}
+
+function generateAI() {
+  const prompt = document.getElementById("aiPrompt").value.trim();
+
+  document.getElementById("aiResult").innerHTML = `
+    <div class="card">
+      <h2>Suggested Itinerary</h2>
+      <p class="small"><strong>Based on:</strong> ${safe(prompt || "General trip request")}</p>
+
+      <div class="itinerary-day"><strong>Day 1:</strong> Arrive, check in, unpack, easy dinner.</div>
+      <div class="itinerary-day"><strong>Day 2:</strong> Main sightseeing or resort day.</div>
+      <div class="itinerary-day"><strong>Day 3:</strong> Excursion, activity, or special experience.</div>
+      <div class="itinerary-day"><strong>Day 4:</strong> Flexible day, shopping, beach, or favorite restaurant.</div>
+      <div class="itinerary-day"><strong>Day 5:</strong> Breakfast, pack, travel home.</div>
+
+      <button onclick="saveAIWantedTrip()">Save as Wanted Trip</button>
+    </div>
+  `;
+}
+
+function saveAIWantedTrip() {
+  const prompt = document.getElementById("aiPrompt").value.trim();
+
+  trips.push({
+    id: crypto.randomUUID(),
+    title: "AI Planned Trip",
+    destination: "To be decided",
+    status: "wanted",
+    startDate: "",
+    endDate: "",
+    travelers: "",
+    budget: "",
+    notes: prompt,
+    wantedReason: "Created from AI planner.",
+    rating: "",
+    favoriteMemory: "",
+    itinerary: [
+      "Day 1: Arrive and settle in",
+      "Day 2: Explore",
+      "Day 3: Main activity",
+      "Day 4: Relax",
+      "Day 5: Travel home"
+    ],
+    memories: []
+  });
+
+  save();
+  currentFilter = "wanted";
+  showPage("trips");
+}
+
+function renderMemories() {
+  const memoryTrips = trips.filter(t => t.status === "past" || t.memories.length || t.favoriteMemory);
+
+  app.innerHTML = `
+    <div class="hero" style="background:linear-gradient(135deg,var(--yellow),#fef3c7); color:#111;">
+      <h1>Travel Memories</h1>
+      <p>Turn past trips into a family travel history.</p>
+    </div>
+
+    ${memoryTrips.map(t => `
+      <div class="card">
+        <h2>${safe(t.title)}</h2>
+        <p class="small">${safe(t.destination)} ${t.startDate ? "• " + t.startDate : ""}</p>
+        ${t.rating ? `<p><strong>Rating:</strong> ${"★".repeat(Number(t.rating))}${"☆".repeat(5-Number(t.rating))}</p>` : ""}
+        ${t.favoriteMemory ? `<div class="memory"><strong>Favorite Memory:</strong><br>${safe(t.favoriteMemory)}</div>` : ""}
+        ${(t.memories || []).map(m => `<div class="memory">${safe(m)}</div>`).join("")}
+      </div>
+    `).join("") || `<div class="card">No memories yet.</div>`}
+  `;
+}
+
+function renderAddTrip() {
+  app.innerHTML = `
+    <div class="card">
+      <h2>Add Trip</h2>
+      <input id="title" placeholder="Trip title">
+      <input id="destination" placeholder="Destination">
+      <select id="status">
+        <option value="upcoming">Upcoming</option>
+        <option value="past">Past</option>
+        <option value="wanted">Wanted</option>
+      </select>
+      <input id="startDate" type="date">
+      <input id="endDate" type="date">
+      <input id="travelers" placeholder="Travelers">
+      <input id="budget" placeholder="Budget">
+      <textarea id="notes" placeholder="Notes, hotels, restaurants, plans, wanted reasons..."></textarea>
+      <button class="green" onclick="addTrip()">Save Trip</button>
+    </div>
   `;
 }
 
 function addTrip() {
   const trip = {
     id: crypto.randomUUID(),
-    title: value("title"),
-    destination: value("destination"),
-    startDate: value("startDate"),
-    endDate: value("endDate"),
-    travelers: value("travelers"),
-    budget: value("budget"),
-    status: value("status"),
-    notes: value("notes"),
+    title: val("title"),
+    destination: val("destination"),
+    status: val("status"),
+    startDate: val("startDate"),
+    endDate: val("endDate"),
+    travelers: val("travelers"),
+    budget: val("budget"),
+    notes: val("notes"),
+    wantedReason: "",
     rating: "",
     favoriteMemory: "",
+    itinerary: [],
     memories: []
   };
 
@@ -303,179 +700,85 @@ function addTrip() {
 
   trips.push(trip);
   save();
-  showPage(trip.status);
+  currentFilter = trip.status;
+  showPage("trips");
 }
 
-function tripCard(trip) {
-  return `
-    <div class="card trip">
-      <h3>${escapeHTML(trip.title)}</h3>
-      <p class="meta">${escapeHTML(trip.destination)}</p>
-      <p><strong>Dates:</strong> ${trip.startDate || "Not set"} - ${trip.endDate || "Not set"}</p>
-      <p><strong>Travelers:</strong> ${escapeHTML(trip.travelers || "Not set")}</p>
-      <p><strong>Budget:</strong> ${trip.budget ? "$" + escapeHTML(trip.budget) : "Not set"}</p>
-      <p>${escapeHTML(trip.notes || "")}</p>
-
-      ${trip.status === "past" ? `
-        <p><strong>Rating:</strong> ${trip.rating || "Not rated"}</p>
-        <p><strong>Favorite Memory:</strong> ${escapeHTML(trip.favoriteMemory || "None yet")}</p>
-      ` : ""}
-
-      <input id="memory-${trip.id}" placeholder="Add memory">
-      <button onclick="addMemory('${trip.id}')">Add Memory</button>
-      <button class="secondary" onclick="editTrip('${trip.id}')">Edit</button>
-      <button class="danger" onclick="deleteTrip('${trip.id}')">Delete</button>
-
-      ${(trip.memories || []).map(m => `<div class="memory">${escapeHTML(m)}</div>`).join("")}
-    </div>
-  `;
+function addItinerary(id) {
+  const t = trips.find(x => x.id === id);
+  const item = val("newItinerary");
+  if (!item) return;
+  t.itinerary.push(item);
+  save();
+  openTrip(id);
 }
 
 function addMemory(id) {
-  const input = document.getElementById("memory-" + id);
-  const text = input.value.trim();
-  if (!text) return;
-
-  const trip = trips.find(t => t.id === id);
-  trip.memories.push(text);
-
-  if (!trip.favoriteMemory) trip.favoriteMemory = text;
-
+  const t = trips.find(x => x.id === id);
+  const item = val("memoryInput");
+  if (!item) return;
+  t.memories.push(item);
+  if (!t.favoriteMemory) t.favoriteMemory = item;
+  if (t.status !== "past") t.status = "past";
   save();
-  showPage(currentPage);
+  openTrip(id);
+}
+
+function addPlaceToNotes(id) {
+  const t = trips.find(x => x.id === id);
+  const place = val("placeInput");
+  if (!place) return;
+  t.notes += `\nSaved Place: ${place}`;
+  save();
+  openTrip(id);
 }
 
 function editTrip(id) {
-  const trip = trips.find(t => t.id === id);
-
-  const title = prompt("Trip title:", trip.title);
+  const t = trips.find(x => x.id === id);
+  const title = prompt("Trip title:", t.title);
   if (title === null) return;
-
-  const destination = prompt("Destination:", trip.destination);
+  const destination = prompt("Destination:", t.destination);
   if (destination === null) return;
-
-  const notes = prompt("Notes:", trip.notes);
-  if (notes === null) return;
-
-  const rating = prompt("Rating 1-5:", trip.rating || "");
+  const budget = prompt("Budget:", t.budget || "");
+  if (budget === null) return;
+  const rating = prompt("Rating 1-5:", t.rating || "");
   if (rating === null) return;
 
-  trip.title = title;
-  trip.destination = destination;
-  trip.notes = notes;
-  trip.rating = rating;
-
+  t.title = title;
+  t.destination = destination;
+  t.budget = budget;
+  t.rating = rating;
   save();
-  showPage(currentPage);
+  renderTrips();
 }
 
 function deleteTrip(id) {
   if (!confirm("Delete this trip?")) return;
   trips = trips.filter(t => t.id !== id);
   save();
-  showPage(currentPage);
+  renderTrips();
 }
 
-function renderMemories() {
-  const memoryTrips = trips.filter(t => (t.memories && t.memories.length) || t.favoriteMemory);
-
-  document.getElementById("content").innerHTML = `
-    <div class="card">
-      <h2>Memories</h2>
-      <p class="meta">Past trip highlights and favorite moments.</p>
-    </div>
-
-    ${memoryTrips.length === 0 ? `<div class="card">No memories saved yet.</div>` : ""}
-
-    ${memoryTrips.map(t => `
-      <div class="card">
-        <h3>${escapeHTML(t.title)}</h3>
-        <p class="meta">${escapeHTML(t.destination)}</p>
-        ${t.favoriteMemory ? `<div class="memory"><strong>Favorite:</strong> ${escapeHTML(t.favoriteMemory)}</div>` : ""}
-        ${(t.memories || []).map(m => `<div class="memory">${escapeHTML(m)}</div>`).join("")}
-      </div>
-    `).join("")}
-  `;
-}
-
-function renderSettings() {
-  document.getElementById("content").innerHTML = `
-    <div class="card">
-      <h2>Settings</h2>
-
-      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-      <button onclick="exportTrips()">Export Trips</button>
-
-      <textarea id="importBox" placeholder="Paste exported trip data here"></textarea>
-      <button onclick="importTrips()">Import Trips</button>
-
-      <hr>
-
-      <h3>AI Planner Placeholder</h3>
-      <textarea id="plannerPrompt" placeholder="Example: Plan a 5-day Cancun trip under $5,000."></textarea>
-      <button onclick="generatePlan()">Generate Plan</button>
-      <div id="plannerResult"></div>
-    </div>
-  `;
-}
-
-function generatePlan() {
-  const prompt = value("plannerPrompt");
-
-  document.getElementById("plannerResult").innerHTML = `
-    <div class="memory">
-      <strong>Suggested Plan</strong><br><br>
-      Request: ${escapeHTML(prompt)}<br><br>
-      Day 1: Arrive, check in, easy dinner.<br>
-      Day 2: Pool, beach, relax.<br>
-      Day 3: Main excursion or activity.<br>
-      Day 4: Flexible day and nice dinner.<br>
-      Day 5: Breakfast, pack, travel home.<br><br>
-      Later this can connect to OpenAI through Firebase.
-    </div>
-  `;
-}
-
-function exportTrips() {
-  navigator.clipboard.writeText(JSON.stringify(trips, null, 2));
-  alert("Trip data copied to clipboard.");
-}
-
-function importTrips() {
-  try {
-    const data = JSON.parse(value("importBox"));
-    if (!Array.isArray(data)) throw new Error();
-    trips = data;
-    save();
-    showPage("upcoming");
-  } catch {
-    alert("Invalid import data.");
-  }
-}
-
-function toggleDarkMode() {
-  document.body.classList.toggle("dark");
-}
-
-function value(id) {
+function val(id) {
   return document.getElementById(id)?.value.trim() || "";
 }
 
-function capitalize(text) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
-}
-
-function escapeHTML(text) {
-  return String(text).replace(/[&<>"']/g, m => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
+function safe(text) {
+  return String(text || "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
   }[m]));
 }
 
-showPage("upcoming");
+function cap(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+showPage("home");
 </script>
+
 </body>
 </html>
